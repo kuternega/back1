@@ -1,5 +1,4 @@
 <?php
-//http://localhost/dashboard/3/index.php
 // Отправляем браузеру правильную кодировку,
 // файл index.php должен быть в кодировке UTF-8 без BOM.
 header('Content-Type: text/html; charset=UTF-8');
@@ -34,7 +33,7 @@ if (empty($_POST['date'])) {
   $errors = TRUE;
 }
 if (empty($_POST['check'])) {
-  print('Чекбокс:).<br/>');
+  print('Чекбокс:)<br/>');
   $errors = TRUE;
 }
 if ($errors) {
