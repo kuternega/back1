@@ -44,14 +44,14 @@
         Сверхспособности:
         <br />
         <select name="powers[]" multiple="multiple" <?php if ($errors['powers']) {print 'class="error"';} ?>>
-          <option value="1" <?php if($errors['powers'] && $values['powers'][1]) {print 'selected="selected"';} ?> >Бессмертие</option>
-          <option value="2" <?php if($errors['powers'] && $values['powers'][2]) {print 'selected="selected"';} ?> >Прохождение сквозь стены </option>
-          <option value="3" <?php if($errors['powers'] && $values['powers'][3]) {print 'selected="selected"';} ?> >Левитация </option>
+          <option value="1" <?php if(!$errors['powers'] && $values['powers'][0]) {print 'selected="selected"';} ?> >Бессмертие</option>
+          <option value="2" <?php if(!$errors['powers'] && $values['powers'][1]) {print 'selected="selected"';} ?> >Прохождение сквозь стены </option>
+          <option value="3" <?php if(!$errors['powers'] && $values['powers'][2]) {print 'selected="selected"';} ?> >Левитация </option>
         </select>
       </label><br />
       <label>
         Биография:<br />
-        <textarea name="biography" <?php if ($errors['biography']) {print 'class="error"';} ?> value="<?php print $values['biography']; ?>"></textarea>
+        <textarea name="biography" <?php if ($errors['biography']) {print 'class="error"';} ?> ><?php print $values['biography']; ?></textarea>
       </label><br />
       <label <?php if ($errors['check']) {print 'class="error"';} ?>><input type="checkbox" name="check" <?php if(!$errors['check']) {print 'checked="checked"';} ?> />
       С контрактом ознакомлен (а)</label><br />

@@ -71,10 +71,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
   $values['birth'] = empty($_COOKIE['birth_value']) ? '' : $_COOKIE['birth_value'];
   $values['pol'] = empty($_COOKIE['pol_value']) ? '' : $_COOKIE['pol_value'];
   $values['konechnosti'] = empty($_COOKIE['konechnosti_value']) ? '' : $_COOKIE['konechnosti_value'];
-  $values['powers'] = empty($_COOKIE['powers_value']) ? '' : $_COOKIE['powers_value'];
+  $values['powers'] = empty($_COOKIE['powers_value']) ? '' : unserialize($_COOKIE['powers_value']);
   $values['biography'] = empty($_COOKIE['biography_value']) ? '' : $_COOKIE['biography_value'];
-  print $_COOKIE['biography_value'];
-  print $values['biography'];
   $values['check'] = empty($_COOKIE['check_value']) ? '' : $_COOKIE['check_value'];
 
   // Включаем содержимое файла form.php.
@@ -85,17 +83,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 // Иначе, если запрос был методом POST, т.е. нужно проверить данные и сохранить их в XML-файл.
 else{
 // Проверяем ошибки.
+$bioreg="/^\s*\w+[\w\s\.,-]*$/";
+$reg="/^[\w\s-]+$/";
+$mailreg="/^[\w\.-]+@([\w-]+\.)+[/w-]{2,4}$/";
+
 $errors = FALSE;
 $cookie_error_time= time() + 24 * 60 * 60;
 $cookie_value_time= time() + 365 * 24 * 60 * 60;
-if (empty($_POST['name'])) {
+if (empty($_POST['name'])||preg_match($reg,$_POST['name'])) {
     setcookie('name_error', '1', $cookie_error_time);
     $errors = TRUE;
 }
 else{
   setcookie('name_value', $_POST['name'], $cookie_value_time);
 }
-if (empty($_POST['email'])) {
+if (empty($_POST['email'])||preg_match($mailreg,$_POST['email'])) {
     setcookie('email_error', '1', $cookie_error_time);
     $errors = TRUE;
 }
@@ -109,7 +111,7 @@ if (empty($_POST['birth'])) {
 else{
   setcookie('birth_value', $_POST['birth'], $cookie_value_time);
 }
-if (empty($_POST['pol'])) {
+if (empty($_POST['pol'])||) {
     setcookie('pol_error', '1', $cookie_error_time);
     $errors = TRUE;
 }
@@ -131,15 +133,15 @@ else{
   $powers = array(0, 0, 0);
   foreach($_POST['powers'] as $power){
       if ($power=='1')
-        $powers[1]=1;
+        $powers[0]=1;
       if ($power=='2')
-        $powers[2]=1;
+        $powers[1]=1;
       if ($power=='3')
-        $powers[3]=1;
+        $powers[2]=1;
   }
-  setcookie('powers_value', $powers, $cookie_value_time);
+  setcookie('powers_value', serialize($powers), $cookie_value_time);
 }
-if (empty($_POST['biography'])) {
+if (empty($_POST['biography'])||preg_match($bioreg,$_POST['biography'])) {
     setcookie('biography_error', '1', $cookie_error_time);
     $errors = TRUE;
 }
