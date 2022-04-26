@@ -1,4 +1,5 @@
 <?php
+//http://localhost/dashboard/4/index.php
 // Отправляем браузеру правильную кодировку,
 // файл index.php должен быть в кодировке UTF-8 без BOM.
 header('Content-Type: text/html; charset=UTF-8');
@@ -70,7 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
   $values['birth'] = empty($_COOKIE['birth_value']) ? '' : $_COOKIE['birth_value'];
   $values['pol'] = empty($_COOKIE['pol_value']) ? '' : $_COOKIE['pol_value'];
   $values['konechnosti'] = empty($_COOKIE['konechnosti_value']) ? '' : $_COOKIE['konechnosti_value'];
-  $values['powers'] = empty($_COOKIE['powers_value']) ? '' : $_COOKIE['powers_value'];
+  $values['powers'] = empty($_COOKIE['biography_value']) ? '' : $_COOKIE['powers_value'];
   $values['biography'] = empty($_COOKIE['biography_value']) ? '' : $_COOKIE['biography_value'];
   $values['check'] = empty($_COOKIE['check_value']) ? '' : $_COOKIE['check_value'];
 
@@ -90,56 +91,65 @@ if (empty($_POST['name'])) {
     $errors = TRUE;
 }
 else{
-	setcookie('name_value', $_POST['name'], $cookie_value_time);
+  setcookie('name_value', $_POST['name'], $cookie_value_time);
 }
 if (empty($_POST['email'])) {
     setcookie('email_error', '1', $cookie_error_time);
     $errors = TRUE;
 }
 else{
-	setcookie('email_value', $_POST['email'], $cookie_value_time);
+  setcookie('email_value', $_POST['email'], $cookie_value_time);
 }
 if (empty($_POST['birth'])) {
     setcookie('birth_error', '1', $cookie_error_time);
     $errors = TRUE;
 }
 else{
-	setcookie('birth_value', $_POST['birth'], $cookie_value_time);
+  setcookie('birth_value', $_POST['birth'], $cookie_value_time);
 }
 if (empty($_POST['pol'])) {
     setcookie('pol_error', '1', $cookie_error_time);
     $errors = TRUE;
 }
 else{
-	setcookie('pol_value', $_POST['pol'], $cookie_value_time);
+  setcookie('pol_value', $_POST['pol'], $cookie_value_time);
 }
 if (empty($_POST['konechnosti'])) {
     setcookie('konechnosti_error', '1', $cookie_error_time);
     $errors = TRUE;
 }
 else{
-	setcookie('konechnosti_value', $_POST['konechnosti'], $cookie_value_time);
+  setcookie('konechnosti_value', $_POST['konechnosti'], $cookie_value_time);
 }
 if (empty($_POST['powers'])) {
     setcookie('powers_error', '1', $cookie_error_time);
     $errors = TRUE;
 }
 else{
-	setcookie('powers_value', $_POST['powers'], $cookie_value_time);
+  $powers = array(0, 0, 0);
+  foreach($_POST['powers'] as $power){
+      if ($power=='1')
+        $powers[1]=1;
+      if ($power=='2')
+        $powers[2]=1;
+      if ($power=='3')
+        $powers[3]=1;
+  }
+  setcookie('powers_value', $powers, $cookie_value_time);
 }
 if (empty($_POST['biography'])) {
     setcookie('biography_error', '1', $cookie_error_time);
     $errors = TRUE;
 }
 else{
-	setcookie('biography_value', $_POST['biography'], $cookie_value_time);
+  setcookie('biography_value', $_POST['biography'], $cookie_value_time);
 }
 if (empty($_POST['check'])) {
     setcookie('check_error', '1', $cookie_error_time);
     $errors = TRUE;
 }
 else{
-	setcookie('name_value', $_POST['name'], $cookie_value_time);
+  setcookie('name_value', $_POST['name'], $cookie_value_time);
 }
 if ($errors) {
     header('Location: index.php');
@@ -148,7 +158,7 @@ if ($errors) {
 else {
     // Удаляем Cookies с признаками ошибок.
     setcookie('name_error', '', 100000);
-	setcookie('email_error', '', 100000);
+    setcookie('email_error', '', 100000);
     setcookie('birth_error', '', 100000);
     setcookie('pol_error', '', 100000);
     setcookie('konechnosti_error', '', 100000);
@@ -166,13 +176,12 @@ $db = new PDO('mysql:host=localhost;dbname=u47597', $user, $pass, array(PDO::ATT
 
 // Подготовленный запрос. Не именованные метки.
 try {
-  $stmt = $db->prepare("INSERT INTO project3 (name, email, birth, pol, konechnosti, powers, biography) VALUES (:name, :email, :birth, :pol, :konechnosti, :powers, :biography, :check)");
+  $stmt = $db->prepare("INSERT INTO project4 (name, email, birth, pol, konechnosti, powers, biography) VALUES (:name, :email, :birth, :pol, :konechnosti, :powers, :biography, :check)");
   $stmt->bindParam(':name', $name);
   $stmt->bindParam(':email', $email);
   $stmt->bindParam(':birth', $birth);
   $stmt->bindParam(':pol', $pol);
   $stmt->bindParam(':konechnosti', $konechnosti);
-  $stmt->bindParam(':powers', $powers);
   $stmt->bindParam(':biography', $biography);
   $stmt->bindParam(':check', $check);
   $name = $_POST['name'];
@@ -180,7 +189,6 @@ try {
   $birth = $_POST['birth'];
   $pol =$_POST['pol'];
   $konechnosti = $_POST['konechnosti'];
-  $powers = $_POST['powers'];
   $biography = $_POST['biography'];
   $check = time();
   $stmt->execute();
@@ -188,6 +196,18 @@ try {
 catch(PDOException $e){
   print('Error : ' . $e->getMessage());
   exit();
+}
+
+foreach($_POST['powers'] as $power){
+  try{
+    $stmt = $db->prepare("INSERT INTO project4_powers (name, power) VALUES (:name, :power)");
+    $stmt->bindParam(':power', $power);
+    $stmt->execute();
+  }
+  catch(PDOException $e){
+    print('Error : ' . $e->getMessage());
+    exit();
+  }
 }
 
 //  stmt - это "дескриптор состояния".
@@ -232,4 +252,5 @@ $stmt->execute();
 // *************
 // TODO: тут необходимо проверить правильность заполнения всех остальных полей.
 // Сохранить в Cookie признаки ошибок и значения полей.
+
 // *************
