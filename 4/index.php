@@ -2,7 +2,7 @@
 //http://localhost/dashboard/4/index.php
 // Отправляем браузеру правильную кодировку,
 // файл index.php должен быть в кодировке UTF-8 без BOM.
-header('Content-Type: text/html; charset=UTF-8'); 
+header('Content-Type: text/html; charset=UTF-8');
 
 // В суперглобальном массиве $_SERVER PHP сохраняет некторые заголовки запроса HTTP
 // и другие сведения о клиненте и сервере, например метод текущего запроса $_SERVER['REQUEST_METHOD'].
@@ -71,8 +71,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
   $values['birth'] = empty($_COOKIE['birth_value']) ? '' : $_COOKIE['birth_value'];
   $values['pol'] = empty($_COOKIE['pol_value']) ? '' : $_COOKIE['pol_value'];
   $values['konechnosti'] = empty($_COOKIE['konechnosti_value']) ? '' : $_COOKIE['konechnosti_value'];
-  $values['powers'] = empty($_COOKIE['biography_value']) ? '' : $_COOKIE['powers_value'];
+  $values['powers'] = empty($_COOKIE['powers_value']) ? '' : $_COOKIE['powers_value'];
   $values['biography'] = empty($_COOKIE['biography_value']) ? '' : $_COOKIE['biography_value'];
+  print $_COOKIE['biography_value'];
+  print $values['biography'];
   $values['check'] = empty($_COOKIE['check_value']) ? '' : $_COOKIE['check_value'];
 
   // Включаем содержимое файла form.php.
