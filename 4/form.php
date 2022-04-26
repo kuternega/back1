@@ -43,7 +43,7 @@
       <label>
         Сверхспособности:
         <br />
-        <select name="powers" multiple="multiple" <?php if ($errors['powers']) {print 'class="error"';} ?>>
+        <select name="powers[]" multiple="multiple" <?php if ($errors['powers']) {print 'class="error"';} ?>>
           <option value="1" selected="selected">Бессмертие</option>
           <option value="2">Прохождение сквозь стены </option>
           <option value="3">Левитация </option>
