@@ -3,4 +3,5 @@
 }
 .error {
   border: 2px solid red;
+  max-width: 280px;
 }
