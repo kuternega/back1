@@ -7,6 +7,12 @@
     <title></title>
 </head>
 <body>
+  <div>
+    <?php 
+      foreach($messages as $message){
+        print $message;
+    }?>
+  </div>
   <div id="form">
     <form action=""
       method="POST">
@@ -19,8 +25,23 @@
         <input name="email" type="email" <?php if ($errors['email']) {print 'class="error"';} ?> value="<?php print $values['email']; ?>" />
       </label><br />
        <label>
-        Дата рождения:<br />
-        <input name="birth" <?php if ($errors['birth']) {print 'class="error"';} ?> value="<?php print $values['birth']; ?>" type="date" />
+        Год рождения:<br />
+        <?php
+        print '<select name="birth" ';
+        if ($errors['birth']) {print 'class="error"';};
+        print '>';
+        for($i=1920;$i<=date('Y');$i++){
+          print '<option ';
+          if(!empty($values['birth'])&&$values['birth']==$i)
+            print 'selected="selected"';
+          print 'value="'.$i.'" />'.$i.'</option>';
+        }
+        print '<option value="" ';
+        if(empty($values['birth']))
+          print 'selected="selected"';
+        print ' hidden></option>';
+        print '</select>';
+        ?>
       </label><br />
      Пол:<br />
    <div <?php if ($errors['pol']) {print 'class="error"';} ?>>
@@ -44,16 +65,16 @@
         Сверхспособности:
         <br />
         <select name="powers[]" multiple="multiple" <?php if ($errors['powers']) {print 'class="error"';} ?>>
-          <option value="1" <?php if(!$errors['powers'] && $values['powers'][0]) {print 'selected="selected"';} ?> >Бессмертие</option>
-          <option value="2" <?php if(!$errors['powers'] && $values['powers'][1]) {print 'selected="selected"';} ?> >Прохождение сквозь стены </option>
-          <option value="3" <?php if(!$errors['powers'] && $values['powers'][2]) {print 'selected="selected"';} ?> >Левитация </option>
+          <option value="1" <?php if(!empty($values['powers']) && $values['powers'][0]) {print 'selected="selected"';} ?> >Бессмертие</option>
+          <option value="2" <?php if(!empty($values['powers']) && $values['powers'][1]) {print 'selected="selected"';} ?> >Прохождение сквозь стены </option>
+          <option value="3" <?php if(!empty($values['powers']) && $values['powers'][2]) {print 'selected="selected"';} ?> >Левитация </option>
         </select>
       </label><br />
       <label>
         Биография:<br />
         <textarea name="biography" <?php if ($errors['biography']) {print 'class="error"';} ?> ><?php print $values['biography']; ?></textarea>
       </label><br />
-      <label <?php if ($errors['check']) {print 'class="error"';} ?>><input type="checkbox" name="check" <?php if(!$errors['check']) {print 'checked="checked"';} ?> />
+      <label <?php if ($errors['check']) {print 'class="error"';} ?>><input type="checkbox" name="check" <?php if(!empty($values['check'])) {print 'checked="checked"';} ?> />
       С контрактом ознакомлен (а)</label><br />
       <input type="submit" value="Отправить" />
     </form>
