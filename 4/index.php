@@ -1,5 +1,4 @@
 <?php
-//http://localhost/dashboard/test/4/index.php
 // Отправляем браузеру правильную кодировку,
 // файл index.php должен быть в кодировке UTF-8 без BOM.
 header('Content-Type: text/html; charset=UTF-8');
