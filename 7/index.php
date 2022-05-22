@@ -1,5 +1,5 @@
 <?php
-//http://localhost/dashboard/test/7/index.php
+
 
 function dbconnect(){
   $user = 'u47597';
