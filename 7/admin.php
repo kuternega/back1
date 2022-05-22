@@ -166,7 +166,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 //если метод POST
 else{
   if(!empty($_COOKIE[session_name()]) &&
-      session_start() && $_SESSION['csrf_token']==== $_POST['csrf_token']){
+      session_start() && $_SESSION['csrf_token'] == $_POST['csrf_token']){
     if(!empty($_POST['cancel'])){
       setcookie('uid', '', 100);
       setcookie('change_user', '', 100);
