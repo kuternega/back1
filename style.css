@@ -1,0 +1,13 @@
+#form{
+	background-color: #ccc;
+}
+.error, .delete{
+  border: 2px solid red;
+  max-width: 280px;
+}
+
+.radio_tables, .powers_counter{
+  margin-right: 260px;
+
+  display: inline-block;
+}
