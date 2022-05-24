@@ -1,4 +1,10 @@
 <?php
+function dbconnect(){
+  $user = 'u47597';
+  $pass = '4080021';
+  $db = new PDO('mysql:host=localhost;dbname=u47597', $user, $pass, array(PDO::ATTR_PERSISTENT => true));
+  return $db;
+}
 // Отправляем браузеру правильную кодировку,
 // файл index.php должен быть в кодировке UTF-8 без BOM.
 header('Content-Type: text/html; charset=UTF-8');
@@ -49,23 +55,49 @@ $pass = '4080021';
 $db = new PDO('mysql:host=localhost;dbname=u47597', $user, $pass, array(PDO::ATTR_PERSISTENT => true));
 
 // Подготовленный запрос. Не именованные метки.
+$db = dbconnect();
+
+// Подготовленный запрос. Не именованные метки.
 try {
-  $stmt = $db->prepare("INSERT INTO project3 (name, email, birth, pol, konechnosti, powers, biography) VALUES (:name, :email, :birth, :pol, :konechnosti, :powers, :biography)");
+  $stmt = $db->prepare("INSERT INTO project4 (name, email, birth, pol, konechnosti, biography, date) VALUES (:name, :email, :birth, :pol, :konechnosti, :biography, :date)");
   $stmt->bindParam(':name', $name);
   $stmt->bindParam(':email', $email);
   $stmt->bindParam(':birth', $birth);
   $stmt->bindParam(':pol', $pol);
   $stmt->bindParam(':konechnosti', $konechnosti);
-  $stmt->bindParam(':powers', $powers);
   $stmt->bindParam(':biography', $biography);
+  $stmt->bindParam(':date', $date);
   $name = $_POST['name'];
   $email = $_POST['email'];
-  $birth = $_POST['date'];
-  $pol =$_POST['radio1'];
-  $konechnosti = $_POST['radio2'];
-  $powers = $_POST['powers'];
+  $birth = $_POST['birth'];
+  $pol =$_POST['pol'];
+  $konechnosti = $_POST['konechnosti'];
   $biography = $_POST['biography'];
+  $date = date('Y-m-d');;
   $stmt->execute();
+
+  $stmt = $db->prepare("SELECT id FROM project4 WHERE name = :name AND email = :email AND birth = :birth AND pol = :pol AND konechnosti = :konechnosti AND biography = :biography AND date = :date");
+  $stmt->bindParam(':name', $name);
+  $stmt->bindParam(':email', $email);
+  $stmt->bindParam(':birth', $birth);
+  $stmt->bindParam(':pol', $pol);
+  $stmt->bindParam(':konechnosti', $konechnosti);
+  $stmt->bindParam(':biography', $biography);
+  $stmt->bindParam(':date', $date);
+  $stmt->execute();
+  $personID=$stmt->fetchColumn();
+foreach($_POST['powers'] as $power){
+    if($power=='1')
+      $power_name="immortal";
+    if($power=='2')
+      $power_name="passing through walls";
+    if($power=='3')
+      $power_name="levitation";
+    $stmt = $db->prepare("INSERT INTO project4_powers (personID, power) VALUES (:personID, :power)");
+    $stmt->bindParam(':personID', $personID);
+    $stmt->bindParam(':power', $power_name);
+    $stmt->execute();
+  }
 }
 catch(PDOException $e){
   print('Error : ' . $e->getMessage());
