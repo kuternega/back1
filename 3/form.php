@@ -21,9 +21,22 @@
       </label><br />
        <label>
         Дата рождения:<br />
-        <input name="date"
-          value="ГГГГ-ММ-ЧЧ"
-          type="date" />
+       <?php
+        print '<select name="birth" ';
+        if ($errors['birth']) {print 'class="error"';};
+        print '>';
+        for($i=1920;$i<=date('Y');$i++){
+          print '<option ';
+          if(!empty($values['birth'])&&$values['birth']==$i)
+            print 'selected="selected"';
+          print 'value="'.$i.'" />'.$i.'</option>';
+        }
+        print '<option value="" ';
+        if(empty($values['birth']))
+          print 'selected="selected"';
+        print ' hidden></option>';
+        print '</select>';
+        ?>
       </label><br />
 
      Пол:<br />
@@ -51,7 +64,7 @@
       <label>
         Сверхспособности:
         <br />
-        <select name="powers"
+        <select name="powers[]"
           multiple="multiple">
           <option value="1" selected="selected">Бессмертие</option>
           <option value="2">Прохождение сквозь стены </option>
